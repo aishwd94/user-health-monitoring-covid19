@@ -1,0 +1,39 @@
+
+                <Form.Group controlId="userControlForm.SelectDevice" className="mx-2">
+                    <Form.Label className="mx-3">Device Key  </Form.Label>
+                    <Form.Control 
+                     as='select'
+                     name='device_key'
+                    >
+                    {
+                        this.state.viewform_data.device_key && this.state.viewform_data.device_key.map((item) => {
+                        return <option key={item}>{item}</option>
+                    })}
+                    </Form.Control>
+                </Form.Group>
+                
+                    <Form.Group controlId="userControlForm.SelectHour" className="mx-2">
+                    <Form.Label className="mx-3">Hour  </Form.Label>
+                    <Form.Control 
+                    as='select'
+                    name='hour'
+                    >
+                    {
+                        this.state.viewform_data.hour && this.state.viewform_data.hour.map((item) => {
+                        return <option key={item}>{item}</option>
+                    })}
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="userControlForm.SelectZipcode" className="mx-2">
+                    <Form.Label className="mx-3 row">Zipcode</Form.Label>
+                    <Form.Control 
+                    as='select'
+                    name='zipcode'
+                    >
+                    {
+                        this.state.viewform_data.zipcode && this.state.viewform_data.zipcode.map((item) => {
+                        return <option key={item}>{item}</option>
+                    })}
+                    </Form.Control>
+                </Form.Group>
+                {/*<Button type="submit">Apply</Button>*/}
