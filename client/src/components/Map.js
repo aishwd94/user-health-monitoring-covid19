@@ -7,6 +7,52 @@ import DeckGL from '@deck.gl/react';
 import {PolygonLayer} from '@deck.gl/layers';
 import {TripsLayer} from '@deck.gl/geo-layers';
 
+
+const test_data = [{
+    "coordinates": [
+      [
+        -88.00036,
+        42.24795
+        
+      ],
+      [
+      -83.00045,
+        47.24781
+        
+      ],
+      [
+      -75.01775,
+        49.26717,
+        
+      ],
+      [
+      -74.0119,
+        56.26796
+        
+      ],
+      [
+      -71.98664,
+        63.24837
+        
+      ],
+      [
+      -65.01695,
+       67.25699,
+        
+      ],
+      [
+       -63.01408,
+        69.27538
+        
+      ]
+    ],
+    "unix_time": [0, 2, 3, 4, 5, 6, 9],
+    "color" : [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0]]
+  }
+  ];
+    
+
+
 // Source data CSV
 const DATA_URL = {
   BUILDINGS:
@@ -56,55 +102,71 @@ const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-styl
 
 const landCover = [[[-74.0, 40.7], [-74.02, 40.7], [-74.02, 40.72], [-74.0, 40.72]]];
 
-export default function Map({
-  trailLength = 180,
-  initialViewState = INITIAL_VIEW_STATE,
-  mapStyle = MAP_STYLE,
-  theme = DEFAULT_THEME,
-  loopLength = 1800, // unit corresponds to the timestamp in source data
-  animationSpeed = 1,
-  mapbox_key = "".
-  data = data,
-}) {
-  const [time, setTime] = useState(0);
-  const [animation] = useState({});
+export default class Map extends React.Component{
 
-  const animate = () => {
-    setTime(t => (t + animationSpeed) % loopLength);
-    animation.id = window.requestAnimationFrame(animate);
-  };
+        //({
+            
+            state = {}
+            
+            constructor(props){
+                super(props)
+                
+                const trailLength = 180;
+                const mapStyle = MAP_STYLE;
+                const theme = DEFAULT_THEME;
+                const loopLength = 1800; // unit corresponds to the timestamp in source data
+                const animationSpeed = 1;
+                const initialViewState=INITIAL_VIEW_STATE;
+                const trips = test_data;
+                const time=4;
+                
+                
+                const layers = [ new TripsLayer({
+                    id: 'trips',
+                    data: trips,
+                    getPath: d => d.coordinates,
+                    getTimestamps: d => d.unix_time - 1546391797,
+                    getColor: [253, 128, 93],
+                    opacity: 0.5,
+                    widthMinPixels: 2,
+                    rounded: true,
+                    trailLength ,
+                    currentTime: time,
+                    shadowEnabled: false
+                    })
+                        ];
+            }
+        //}) {
+            
+    //const [time, setTime] = useState(0);
+    //const [animation] = useState({});
+    //
+    //const animate = () => {
+    //    setTime(t => (t + animationSpeed) % loopLength);
+    //    animation.id = window.requestAnimationFrame(animate);
+    //};
+    //
+    //useEffect(
+    //    () => {
+    //    animation.id = window.requestAnimationFrame(animate);
+    //    return () => window.cancelAnimationFrame(animation.id);
+    //    },
+    //    [animation]
+    //);
 
-  useEffect(
-    () => {
-      animation.id = window.requestAnimationFrame(animate);
-      return () => window.cancelAnimationFrame(animation.id);
-    },
-    [animation]
-  );
 
-  const layers = [
+    //const initialViewState = { latitude: -87.99456 , longitude : 42.0754 ,  pitch: 45, bearing: 0 }
+
+    //const layers = [
     // This is only needed when using shadow effects
-    new PolygonLayer({
-      id: 'ground',
-      data: landCover,
-      getPolygon: f => f,
-      stroked: false,
-      getFillColor: [0, 0, 0, 0]
-    }),
-    new TripsLayer({
-      id: 'trips',
-      data: data,
-      getPath: d => d.path,
-      getTimestamps: d => d.timestamps,
-      getColor: d => (d.vendor === 0 ? theme.trailColor0 : theme.trailColor1),
-      opacity: 0.3,
-      widthMinPixels: 2,
-      rounded: true,
-      trailLength,
-      currentTime: time,
+    //new PolygonLayer({
+    //  id: 'ground',
+    //  data: landCover,
+    //  getPolygon: f => f,
+    //  stroked: false,
+    //  getFillColor: [0, 0, 0, 0]
+    //}),
 
-      shadowEnabled: false
-    }),
     /*new PolygonLayer({
       id: 'buildings',
       data: buildings,
@@ -116,17 +178,22 @@ export default function Map({
       getFillColor: theme.buildingColor,
       material: theme.material
     })*/
-  ];
+  //];
+  
 
+
+render(){
   return (
     <DeckGL
-      layers={layers}
-      effects={theme.effects}
-      initialViewState={initialViewState}
+      layers={this.layers}
+      effects={this.props.theme.effects}
+      initialViewState={this.propsinitialViewState}
       controller={true}
     >
-      <StaticMap reuseMaps mapboxApiAccessToken={mapbox_key}   preventStyleDiffing={false} /> 
+    
+      <StaticMap reuseMaps mapStyle={this.props.mapStyle} mapboxApiAccessToken={this.props.mapboxApiAccessToken}   preventStyleDiffing={false} /> 
     </DeckGL>
   );
+    }
 }
 

@@ -13,21 +13,22 @@ class TAForm extends React.Component{
 
     state = {isLoading : false}
 
-    constructor()
+    constructor(props)
     {
-        super();
+        super(props);
+        console.log(props);
+        this.handleSearch = this.handleSearch.bind(this)
     }
      
     handleSearch = (val) => {
     //setIsLoading(true);
     
     
-    const col = this.props.column_name;
+    let col = this.props.fname;
     
     this.setState({isLoading:true});
     
     let sel = {'column' :  col , 'key' : val}
-    console.log(val)
 
     axios.get(`http://localhost:5000/get_form_fields`,  { 'params' : sel} )
         .then((resp) => {
@@ -39,20 +40,22 @@ class TAForm extends React.Component{
             
         this.setState({isLoading:false});
         } )
+        
       
   }
     render(){
     return(
                 <React.Fragment>
-                <Form.Group>
-                <Form.Label>{'Select '+this.props.label}</Form.Label>
+                <Form.Group style={this.props.style}>
+                    {/*<Form.Label>{'Select '+this.props.label}</Form.Label>*/}
                 <AsyncTypeahead
                     filterBy={() => true}
-                    id={this.props.column_name}
+                    id={this.props.fname}
                     isLoading={this.state.isLoading}
                     minLength={this.props.minLength}
                     onSearch={this.handleSearch}
-                    options={this.state[this.props.column_name]}
+                    onChange={this.props.onChange}
+                    options={this.state[this.props.fname]}
                     multiple
                     placeholder={"Search for a " + this.props.label}
                     
