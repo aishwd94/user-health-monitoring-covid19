@@ -1,6 +1,8 @@
 # Covid19 Contact Tracing
 
-References:
-[1] https://ericgio.github.io/react-bootstrap-typeahead/
+To start the server, go to ./server/ and run:
+`python app.py`
 
-[2] https://www.digitalocean.com/community/tutorials/react-axios-react
+To start the client, go to ./client/ and run:
+`npm start`
+
