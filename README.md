@@ -1,4 +1,4 @@
-# Covid19 Contact Tracing
+# User Health Monitoring Covid19
 
 To start the server, go to ./server/ and run:
 `python app.py`
